@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AdResult
+namespace KoroGames.KoroAds
 {
-    empty,
-    success,
-    not_available,
-    waited,
-    start,
-    watched,
-    clicked,
-    canceled
+    public enum AdResult
+    {
+        empty,
+        success,
+        not_available,
+        waited,
+        start,
+        watched,
+        clicked,
+        canceled
+    }
 }

@@ -1,8 +1,10 @@
-public interface IAdAdapter
+namespace KoroGames.KoroAds
 {
-    void Init();
-    void CallDebug();
-    bool IsInterstitialLoaded();
-    bool IsRewardedLoaded();
+    public interface IAdAdapter
+    {
+        void Init();
+        void CallDebug();
+        bool IsInterstitialLoaded();
+        bool IsRewardedLoaded();
+    }
 }
-

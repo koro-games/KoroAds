@@ -1,6 +1,9 @@
-public enum AdType
+namespace KoroGames.KoroAds
 {
-    interstitial,
-    rewarded,
-    banner
+    public enum AdType
+    {
+        interstitial,
+        rewarded,
+        banner
+    }
 }

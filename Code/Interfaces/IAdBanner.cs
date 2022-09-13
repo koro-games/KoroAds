@@ -1,10 +1,10 @@
-
-
-public interface IAdBanner
+namespace KoroGames.KoroAds
 {
-    IAdAnalytic Analytic { get; set; }
-    bool IsOpen { get; }
-    void ShowBanner();
-    void HideBanner();
+    public interface IAdBanner
+    {
+        IAdAnalytic Analytic { get; set; }
+        bool IsOpen { get; }
+        void ShowBanner();
+        void HideBanner();
+    }
 }
-

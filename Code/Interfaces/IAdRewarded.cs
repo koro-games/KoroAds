@@ -1,9 +1,10 @@
-
-public interface IAdRewarded
+namespace KoroGames.KoroAds
 {
-    IAdAnalytic Analytic { get; set; }
-    System.Action OnAdLoad { get; set; }
-    bool IsLoadAd();
-    bool TryCallRewarded(AdRequest adRequest);
+    public interface IAdRewarded
+    {
+        IAdAnalytic Analytic { get; set; }
+        System.Action OnAdLoad { get; set; }
+        bool IsLoadAd();
+        bool TryCallRewarded(AdRequest adRequest);
+    }
 }
-

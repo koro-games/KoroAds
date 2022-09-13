@@ -1,8 +1,11 @@
-public interface IAdAnalytic
+namespace KoroGames.KoroAds
 {
-    bool ConnectionStatus { get; }
+    public interface IAdAnalytic
+    {
+        bool ConnectionStatus { get; }
 
-    void VideoAdsAvailable(AdType adType, string placement, AdResult result);
-    void VideoAdsStarted(AdType adType, string placement, AdResult result);
-    void VideoAdsWatch(AdType adType, string placement, AdResult result, AdRevenue revenueData);
+        void VideoAdsAvailable(AdType adType, string placement, AdResult result);
+        void VideoAdsStarted(AdType adType, string placement, AdResult result);
+        void VideoAdsWatch(AdType adType, string placement, AdResult result, AdRevenue revenueData);
+    }
 }
