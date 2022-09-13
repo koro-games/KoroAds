@@ -1,10 +1,10 @@
 {
-  "name": "com.korogames.korotads",
+  "name": "com.korogames.koroads",
   "author": "KoroGames",
   "displayName": "KoroAds",
   "description": "KoroAds",
   "unity": "2020.3",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [
     "korogames"
   ],
