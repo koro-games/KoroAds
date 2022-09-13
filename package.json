@@ -1,0 +1,19 @@
+{
+  "name": "com.korogames.korotads",
+  "author": "KoroGames",
+  "displayName": "KoroAds",
+  "description": "KoroAds",
+  "unity": "2020.3",
+  "version": "1.0.0",
+  "keywords": [
+    "korogames"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koro-games/KoroAds"
+  },
+  "type": "",
+  "dependencies": {
+    "com.unity.purchasing": "4.3.0"
+  }
+}
