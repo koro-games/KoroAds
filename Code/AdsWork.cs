@@ -78,6 +78,8 @@ namespace KoroGames.KoroAds
 
         public void CallInterstitial(AdRequest request)
         {
+            Debug.Log(CurrentAd == null ? "None AD" : CurrentAd.PlacementName);
+
             if (CurrentAd != null) return;
 
             CurrentAd = request;
@@ -110,6 +112,7 @@ namespace KoroGames.KoroAds
 
         public void CallReward(AdRequest request)
         {
+            Debug.Log(CurrentAd == null ? "None AD" : CurrentAd.PlacementName);
 
             if (CurrentAd != null) return;
 
@@ -142,15 +145,6 @@ namespace KoroGames.KoroAds
 
         public bool IsRewardLoaded() => _adAdapter.IsRewardedLoaded() && !DebugNotAd;
 
-        public void CallCloseAdsLoad()
-        {
-            if (CurrentAd != null && CurrentAd.OnNotWaited != null) CurrentAd.OnNotWaited();
-
-            _adInterstitial.OnAdLoad = null;
-            _adRewarded.OnAdLoad = null;
-            _loadingScreen.SetActive(false);
-            CurrentAd = null;
-        }
 
         public void SetBannerStatus(bool status)
         {
