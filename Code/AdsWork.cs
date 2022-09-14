@@ -18,9 +18,13 @@ namespace KoroGames.KoroAds
         public bool UseInterstitial;
         public bool UseRewarded;
         public bool UseBanner;
+
         public bool DebugNotAd;
 
-        public bool IsNoAd => KoroGames.KoroAds.Products.NoAdProduct.NoAdsStatus;
+        public bool Debug_InterstitialNotLoad;
+        public bool Debug_RewardNotLoad;
+
+        public bool IsNoAd => KoroGames.KoroAds.Products.NoAdProduct.NoAdsStatus || DebugNotAd;
 
         public static AdsWork Manager { get; private set; }
 
@@ -79,27 +83,27 @@ namespace KoroGames.KoroAds
             CurrentAd = request;
             request.OnClose += () => CurrentAd = null;
 
-            if (!UseInterstitial || IsNoAd || !_adInterstitial.TryCallInterstitial(request))
+            if (!UseInterstitial || IsNoAd)
             {
                 request.OnClose.Invoke();
                 CurrentAd = null;
                 return;
             }
 
-            if (false)
+            if (!_adInterstitial.TryCallInterstitial(request) || Debug_InterstitialNotLoad)
             {
-                _adAnalytic.VideoAdsAvailable(AdType.interstitial, request.PlacementName, AdResult.not_available);
-                _loadingScreen.SetActive(true);
-                _adInterstitial.OnAdLoad = () =>
+                if (_adRewarded.IsLoadAd() && !Debug_RewardNotLoad)
                 {
-                    _adAnalytic.VideoAdsAvailable(AdType.interstitial, request.PlacementName, AdResult.waited);
-                    _adInterstitial.TryCallInterstitial(request);
-                    _loadingScreen.SetActive(false);
-                };
+                    _adRewarded.TryCallRewarded(request);
+                    return;
+                }
+
+                request.OnClose?.Invoke();
+                CurrentAd = null;
                 return;
             }
-            _adAnalytic.VideoAdsAvailable(AdType.interstitial, request.PlacementName, AdResult.success);
 
+            _adAnalytic.VideoAdsAvailable(AdType.interstitial, request.PlacementName, AdResult.success);
         }
 
         public bool IsInterstitialLoaded() => _adAdapter.IsInterstitialLoaded() && !DebugNotAd;
@@ -120,8 +124,15 @@ namespace KoroGames.KoroAds
             request.OnClose += () => CurrentAd = null;
 
 
-            if (!_adRewarded.TryCallRewarded(request))
+            if (!_adRewarded.TryCallRewarded(request) || Debug_RewardNotLoad)
             {
+                if (_adInterstitial.IsLoadAd() && !Debug_InterstitialNotLoad)
+                {
+                    request.OnClose += () => request.OnReward.Invoke();
+                    _adInterstitial.TryCallInterstitial(request);
+                    return;
+                }
+
                 request.OnClose?.Invoke();
                 CurrentAd = null;
                 return;
