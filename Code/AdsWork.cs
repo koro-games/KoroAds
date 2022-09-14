@@ -90,7 +90,7 @@ namespace KoroGames.KoroAds
                 return;
             }
 
-            if (!_adInterstitial.TryCallInterstitial(request) || Debug_InterstitialNotLoad)
+            if (Debug_InterstitialNotLoad || !_adInterstitial.TryCallInterstitial(request))
             {
                 if (_adRewarded.IsLoadAd() && !Debug_RewardNotLoad)
                 {
@@ -124,7 +124,7 @@ namespace KoroGames.KoroAds
             request.OnClose += () => CurrentAd = null;
 
 
-            if (!_adRewarded.TryCallRewarded(request) || Debug_RewardNotLoad)
+            if (Debug_RewardNotLoad || !_adRewarded.TryCallRewarded(request))
             {
                 if (_adInterstitial.IsLoadAd() && !Debug_InterstitialNotLoad)
                 {
