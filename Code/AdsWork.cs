@@ -19,10 +19,12 @@ namespace KoroGames.KoroAds
         public bool UseRewarded;
         public bool UseBanner;
 
-        public bool DebugNotAd;
+        [Tooltip("Load inter if reward not loaded and vice versa")] public bool AllowCrossAd;
 
-        public bool Debug_InterstitialNotLoad;
-        public bool Debug_RewardNotLoad;
+        [Tooltip("Debug use no ads")] public bool DebugNotAd;
+        [Tooltip("Disable load ad inter")] public bool Debug_InterstitialNotLoad;
+        [Tooltip("Disable load ad reward")] public bool Debug_RewardNotLoad;
+
 
         public bool IsNoAd => KoroGames.KoroAds.Products.NoAdProduct.NoAdsStatus || DebugNotAd;
 
@@ -96,8 +98,10 @@ namespace KoroGames.KoroAds
             {
                 if (_adRewarded.IsLoadAd() && !Debug_RewardNotLoad)
                 {
-                    _adRewarded.TryCallRewarded(request);
-                    return;
+                    if (_adRewarded.TryCallRewarded(request))
+                    {
+                        return;
+                    }
                 }
 
                 request.OnClose?.Invoke();
@@ -117,23 +121,24 @@ namespace KoroGames.KoroAds
             if (CurrentAd != null) return;
 
             CurrentAd = request;
+            request.OnClose += () => CurrentAd = null;
+
             if (!UseRewarded)
             {
                 request.OnClose?.Invoke();
                 request.OnReward?.Invoke();
-                CurrentAd = null;
                 return;
             }
-            request.OnClose += () => CurrentAd = null;
-
 
             if (Debug_RewardNotLoad || !_adRewarded.TryCallRewarded(request))
             {
                 if (_adInterstitial.IsLoadAd() && !Debug_InterstitialNotLoad)
                 {
                     request.OnClose += () => request.OnReward.Invoke();
-                    _adInterstitial.TryCallInterstitial(request);
-                    return;
+                    if (_adInterstitial.TryCallInterstitial(request))
+                    {
+                        return;
+                    }
                 }
 
                 request.OnClose?.Invoke();
