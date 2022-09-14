@@ -16,7 +16,7 @@ namespace KoroGames.KoroAds.Products
         public IStoreController store;
         private void Start()
         {
-            ADSButton.interactable = NoAdsStatus;
+            ADSButton.interactable = !NoAdsStatus;
             store = CodelessIAPStoreListener.Instance.StoreController;
             TryCallReceipt();
         }
