@@ -8,12 +8,15 @@ namespace KoroGames.KoroAds.Products
 {
     public class NoAdProduct : MonoBehaviour
     {
+
+        public static bool NoAdsStatus => PlayerPrefs.GetInt("NoAds", 0) == 1;
+
         public Button ADSButton;
 
         public IStoreController store;
         private void Start()
         {
-            ADSButton.interactable = PlayerPrefs.GetInt("NoAds", 0) != 1;
+            ADSButton.interactable = NoAdsStatus;
             store = CodelessIAPStoreListener.Instance.StoreController;
             TryCallReceipt();
         }

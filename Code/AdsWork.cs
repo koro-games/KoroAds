@@ -20,7 +20,7 @@ namespace KoroGames.KoroAds
         public bool UseBanner;
         public bool DebugNotAd;
 
-        public bool NoAdOffer { get => PlayerPrefs.GetInt("NoAdOffer") == 1; set => PlayerPrefs.SetInt("NoAdOffer", value ? 1 : 0); }
+        public bool IsNoAd => KoroGames.KoroAds.Products.NoAdProduct.NoAdsStatus;
 
         public static AdsWork Manager { get; private set; }
 
@@ -79,7 +79,7 @@ namespace KoroGames.KoroAds
             CurrentAd = request;
             request.OnClose += () => CurrentAd = null;
 
-            if (!UseInterstitial || NoAdOffer || !_adInterstitial.TryCallInterstitial(request))
+            if (!UseInterstitial || IsNoAd || !_adInterstitial.TryCallInterstitial(request))
             {
                 request.OnClose.Invoke();
                 CurrentAd = null;
@@ -143,7 +143,7 @@ namespace KoroGames.KoroAds
 
         public void SetBannerStatus(bool status)
         {
-            if (status && UseBanner && !NoAdOffer)
+            if (status && UseBanner && !IsNoAd)
             {
                 if (!_adBanner.IsOpen)
                     _adBanner.ShowBanner();
