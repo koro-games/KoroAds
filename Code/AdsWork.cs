@@ -112,7 +112,7 @@ namespace KoroGames.KoroAds
             _adAnalytic.VideoAdsAvailable(AdType.interstitial, request.PlacementName, AdResult.success);
         }
 
-        public bool IsInterstitialLoaded() => _adAdapter.IsInterstitialLoaded() && !DebugNotAd || (AllowCrossAd && _adAdapter.IsRewardedLoaded());
+        public bool IsInterstitialLoaded() => (_adAdapter.IsInterstitialLoaded() || (AllowCrossAd && _adAdapter.IsRewardedLoaded())) && !DebugNotAd;
 
         public void CallReward(AdRequest request)
         {
@@ -148,7 +148,7 @@ namespace KoroGames.KoroAds
             _adAnalytic.VideoAdsAvailable(AdType.rewarded, request.PlacementName, AdResult.success);
         }
 
-        public bool IsRewardLoaded() => _adAdapter.IsRewardedLoaded() && !DebugNotAd || (AllowCrossAd && _adAdapter.IsInterstitialLoaded());
+        public bool IsRewardLoaded() => (_adAdapter.IsRewardedLoaded() || (AllowCrossAd && _adAdapter.IsInterstitialLoaded())) && !DebugNotAd;
 
 
         public void SetBannerStatus(bool status)
