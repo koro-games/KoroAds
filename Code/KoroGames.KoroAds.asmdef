@@ -2,8 +2,8 @@
     "name": "KoroGames.KoroAds",
     "rootNamespace": "KoroGames.KoroAds",
     "references": [
-        "GUID:60bfecf5cb232594891bc622f40d6bed",
-        "GUID:059c931883a8a274690376c0592ea9a0"
+        "UnityEngine.Purchasing",
+        "UnityEngine.Purchasing.Codeless"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

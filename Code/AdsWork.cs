@@ -96,7 +96,7 @@ namespace KoroGames.KoroAds
 
             if (Debug_InterstitialNotLoad || !_adInterstitial.TryCallInterstitial(request))
             {
-                if (_adRewarded.IsLoadAd() && !Debug_RewardNotLoad)
+                if (_adRewarded.IsLoadAd() && !Debug_RewardNotLoad && AllowCrossAd)
                 {
                     if (_adRewarded.TryCallRewarded(request))
                     {
@@ -132,7 +132,7 @@ namespace KoroGames.KoroAds
 
             if (Debug_RewardNotLoad || !_adRewarded.TryCallRewarded(request))
             {
-                if (_adInterstitial.IsLoadAd() && !Debug_InterstitialNotLoad)
+                if (_adInterstitial.IsLoadAd() && !Debug_InterstitialNotLoad && AllowCrossAd)
                 {
                     request.OnClose += () => request.OnReward.Invoke();
                     if (_adInterstitial.TryCallInterstitial(request))
