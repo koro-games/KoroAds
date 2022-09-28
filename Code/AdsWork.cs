@@ -82,7 +82,7 @@ namespace KoroGames.KoroAds
         {
             Debug.Log(CurrentAd == null ? "None AD" : CurrentAd.PlacementName);
 
-            if (CurrentAd != null) return;
+            if (CurrentAd != null) CurrentAd = null;
 
             CurrentAd = request;
             request.OnClose += () => CurrentAd = null;
@@ -118,7 +118,7 @@ namespace KoroGames.KoroAds
         {
             Debug.Log(CurrentAd == null ? "None AD" : CurrentAd.PlacementName);
 
-            if (CurrentAd != null) return;
+            if (CurrentAd != null) CurrentAd = null;
 
             CurrentAd = request;
             request.OnClose += () => CurrentAd = null;
