@@ -21,7 +21,8 @@ namespace KoroGames.KoroAds
         public bool UseBanner;
 
         [Tooltip("Load inter if reward not loaded and vice versa"), Header("Setting")] public bool AllowCrossAd;
-        [Tooltip("Alllow load ad with loading screen, or skip ads")] public bool AllowLongLoad;
+        [Tooltip("Alllow load ad with loading screen, or skip ads")] public bool AllowInterstitialLongLoad;
+        [Tooltip("Alllow load ad with loading screen, or skip ads")] public bool AllowRewadedLongLoad;
 
 #if DEBUG_MODE
         [Tooltip("Debug use no ads")] public bool DebugNotAd;
@@ -34,6 +35,9 @@ namespace KoroGames.KoroAds
 #endif
 
         public bool IsNoAd => KoroGames.KoroAds.Products.NoAdProduct.NoAdsStatus || DebugNotAd;
+        public bool IsInterstitialLoaded() => (_adAdapter.IsInterstitialLoaded() || (AllowCrossAd && _adAdapter.IsRewardedLoaded())) && !DebugNotAd;
+        public bool IsRewardLoaded() => (_adAdapter.IsRewardedLoaded() || (AllowCrossAd && _adAdapter.IsInterstitialLoaded())) && !DebugNotAd;
+
 
         public static AdsWork Manager { get; private set; }
 
@@ -76,22 +80,14 @@ namespace KoroGames.KoroAds
             _adAnalytic = GetComponent<IAdAnalytic>();
         }
 
-        public void CallEndLevelAd(Action OnClose)
-        {
-            _endLevelAd.OnClose = OnClose;
-            _endLevelAd.OnClose += () => CurrentAd = null;
-            _endLevelAd.OnClose += _endLevelAd.OnClose = null;
-            _endLevelAd.OnNotWaited = _endLevelAd.OnClose;
-            CallInterstitial(_endLevelAd);
-        }
+
 
         public void CallInterstitial(AdRequest request)
         {
-            Debug.Log(CurrentAd == null ? "None AD" : CurrentAd.PlacementName);
-
             if (CurrentAd != null) CurrentAd = null;
 
             CurrentAd = request;
+            Debug.Log(CurrentAd == null ? "None AD" : CurrentAd.PlacementName);
             request.OnClose += () => CurrentAd = null;
 
             if (!UseInterstitial || IsNoAd)
@@ -111,6 +107,13 @@ namespace KoroGames.KoroAds
                     }
                 }
 
+                if (AllowInterstitialLongLoad)
+                {
+                    _adRewarded.OnAdLoad += () => CallInterstitial(request);
+                    _loadingScreen.SetActive(true);
+                    return;
+                }
+
                 request.OnClose?.Invoke();
                 CurrentAd = null;
                 return;
@@ -119,15 +122,12 @@ namespace KoroGames.KoroAds
             _adAnalytic.VideoAdsAvailable(AdType.interstitial, request.PlacementName, AdResult.success);
         }
 
-        public bool IsInterstitialLoaded() => (_adAdapter.IsInterstitialLoaded() || (AllowCrossAd && _adAdapter.IsRewardedLoaded())) && !DebugNotAd;
-
         public void CallReward(AdRequest request)
         {
-            Debug.Log(CurrentAd == null ? "None AD" : CurrentAd.PlacementName);
-
             if (CurrentAd != null) CurrentAd = null;
 
             CurrentAd = request;
+            Debug.Log(CurrentAd == null ? "None AD" : CurrentAd.PlacementName);
             request.OnClose += () => CurrentAd = null;
 
             if (!UseRewarded)
@@ -148,15 +148,19 @@ namespace KoroGames.KoroAds
                     }
                 }
 
+                if (AllowRewadedLongLoad)
+                {
+                    _adRewarded.OnAdLoad += () => CallReward(request);
+                    _loadingScreen.SetActive(true);
+                    return;
+                }
+
                 request.OnClose?.Invoke();
                 CurrentAd = null;
                 return;
             }
             _adAnalytic.VideoAdsAvailable(AdType.rewarded, request.PlacementName, AdResult.success);
         }
-
-        public bool IsRewardLoaded() => (_adAdapter.IsRewardedLoaded() || (AllowCrossAd && _adAdapter.IsInterstitialLoaded())) && !DebugNotAd;
-
 
         public void SetBannerStatus(bool status)
         {
@@ -172,7 +176,15 @@ namespace KoroGames.KoroAds
             }
         }
 
-        public void CallDebug() => _adAdapter.CallDebug();
+        public void CloseLoading()
+        {
+            _loadingScreen.SetActive(false);
+            CurrentAd?.OnNotWaited?.Invoke();
+            CurrentAd = null;
+            _adInterstitial.OnAdLoad = null;
+            _adRewarded.OnAdLoad = null;
+        }
+
 
 #if DEBUG_MODE
     private void OnGUI()
@@ -183,6 +195,8 @@ namespace KoroGames.KoroAds
             CallDebug();
         }
     }
+
+    public void CallDebug() => _adAdapter.CallDebug();
 #endif
 
         public void OnActiveNoAD()
