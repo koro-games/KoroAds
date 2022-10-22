@@ -15,16 +15,23 @@ namespace KoroGames.KoroAds
         private IAdAnalytic _adAnalytic;
         private AdRequest _endLevelAd;
 
+        [Header("AD")]
         public bool UseInterstitial;
         public bool UseRewarded;
         public bool UseBanner;
 
-        [Tooltip("Load inter if reward not loaded and vice versa")] public bool AllowCrossAd;
+        [Tooltip("Load inter if reward not loaded and vice versa"), Header("Setting")] public bool AllowCrossAd;
+        [Tooltip("Alllow load ad with loading screen, or skip ads")] public bool AllowLongLoad;
 
+#if DEBUG_MODE
         [Tooltip("Debug use no ads")] public bool DebugNotAd;
         [Tooltip("Disable load ad inter")] public bool Debug_InterstitialNotLoad;
         [Tooltip("Disable load ad reward")] public bool Debug_RewardNotLoad;
-
+#else
+        public bool DebugNotAd => false;
+        public bool Debug_InterstitialNotLoad => false;
+        public bool Debug_RewardNotLoad => false;
+#endif
 
         public bool IsNoAd => KoroGames.KoroAds.Products.NoAdProduct.NoAdsStatus || DebugNotAd;
 
