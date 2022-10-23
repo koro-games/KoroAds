@@ -110,6 +110,7 @@ namespace KoroGames.KoroAds
                 if (AllowInterstitialLongLoad)
                 {
                     _adRewarded.OnAdLoad += () => CallInterstitial(request);
+                    _adRewarded.OnAdLoad += () => _loadingScreen.SetActive(false);
                     _loadingScreen.SetActive(true);
                     return;
                 }
@@ -151,6 +152,7 @@ namespace KoroGames.KoroAds
                 if (AllowRewadedLongLoad)
                 {
                     _adRewarded.OnAdLoad += () => CallReward(request);
+                    _adRewarded.OnAdLoad += () => _loadingScreen.SetActive(false);
                     _loadingScreen.SetActive(true);
                     return;
                 }
