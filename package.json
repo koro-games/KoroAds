@@ -4,7 +4,7 @@
   "displayName": "KoroAds",
   "description": "KoroAds",
   "unity": "2020.3",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "keywords": [
     "korogames"
   ],
@@ -13,7 +13,5 @@
     "url": "https://github.com/koro-games/KoroAds"
   },
   "type": "",
-  "dependencies": {
-    "com.unity.purchasing": "4.0.3"
-  }
+  "dependencies": {}
 }
