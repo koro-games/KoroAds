@@ -16,6 +16,7 @@ namespace KoroGames.KoroAds
         private AdRequest _endLevelAd;
 
         [Header("AD")]
+        public bool LateInit;
         public bool UseInterstitial;
         public bool UseRewarded;
         public bool UseBanner;
@@ -54,8 +55,11 @@ namespace KoroGames.KoroAds
         }
         private AdRequest currentAd;
 
-        private void Awake()
+        private IEnumerator Start()
         {
+
+            if (LateInit)
+                yield return new WaitForSeconds(0.66f);
 
             if (PlayerPrefs.GetInt("NoAds") == 1)
             {
@@ -65,7 +69,7 @@ namespace KoroGames.KoroAds
             if (Manager != this && Manager != null)
             {
                 Destroy(gameObject);
-                return;
+                yield break;
             }
             Manager = this;
             DontDestroyOnLoad(gameObject);
