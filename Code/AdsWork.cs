@@ -146,7 +146,9 @@ namespace KoroGames.KoroAds
             {
                 if (_adAdapter.IsInterstitialLoaded() && !Debug_InterstitialNotLoad && AllowCrossAd)
                 {
-                    request.OnClose += () => request.OnReward.Invoke();
+                    var action = request.OnReward;
+                    action += request.OnClose;
+                    request.OnClose = () => action.Invoke();
                     if (_adInterstitial.TryCallInterstitial(request))
                     {
                         return;
