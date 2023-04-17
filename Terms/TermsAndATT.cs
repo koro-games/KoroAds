@@ -10,7 +10,7 @@ using UnityEngine.Events;
 namespace KoroGames.KoroAds
 {
 
-    public class TermsAndATT : MonoBehaviour
+    public class TermsAndATT : PreGameCondition
     {
 
         private const string TermsAcceptedKey = "UserAcceptTerms";
@@ -22,9 +22,18 @@ namespace KoroGames.KoroAds
         [SerializeField] protected Transform PanelParentCanvas;
 
         private UITermsPanel PanelInstance;
+        private bool _isDone;
         #endregion
 
         #region Public
+        public override bool IsDone() => _isDone;
+
+        public override void Init()
+        {
+            EventOnTermsAccepted += () => _isDone = true;
+            BeginPlay();
+        }
+
         public void BeginPlay()
         {
 #if UNITY_IOS
