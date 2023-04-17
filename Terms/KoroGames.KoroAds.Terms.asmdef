@@ -1,0 +1,16 @@
+{
+    "name": "KoroGames.KoroAds.Terms",
+    "rootNamespace": "KoroGames.KoroAds.Terms",
+    "references": [
+        "GUID:b92d5b99e2e7f4a5bb333c12ab19094e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
