@@ -57,7 +57,6 @@ namespace KoroGames.KoroAds
 
         private IEnumerator Start()
         {
-
             if (LateInit)
                 yield return new WaitForSeconds(0.66f);
 
