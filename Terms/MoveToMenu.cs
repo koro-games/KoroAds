@@ -9,14 +9,15 @@ namespace KoroGames.KoroAds
 {
     public class MoveToMenu : MonoBehaviour
     {
-            [SerializeField] private TermsAndATT _terms;
+        [SerializeField] private TermsAndATT _terms;
 
-            private bool _termsAccept;
+        private bool _termsAccept;
 
-            void Awake()
+        void Awake()
         {
-                StartCoroutine(LoadMenu());
-                _terms.EventOnTermsAccepted += () => _termsAccept = true;
+            StartCoroutine(LoadMenu());
+            _terms.EventOnTermsAccepted += () => _termsAccept = true;
+            _terms.BeginPlay();
         }
 
         private IEnumerator LoadMenu()
