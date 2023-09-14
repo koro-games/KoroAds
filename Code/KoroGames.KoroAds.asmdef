@@ -3,7 +3,8 @@
     "rootNamespace": "KoroGames.KoroAds",
     "references": [
         "UnityEngine.Purchasing",
-        "UnityEngine.Purchasing.Codeless"
+        "UnityEngine.Purchasing.Codeless",
+        "Purchasing.Common"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

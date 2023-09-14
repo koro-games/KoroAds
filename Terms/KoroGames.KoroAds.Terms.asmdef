@@ -2,7 +2,8 @@
     "name": "KoroGames.KoroAds.Terms",
     "rootNamespace": "KoroGames.KoroAds.Terms",
     "references": [
-        "GUID:b92d5b99e2e7f4a5bb333c12ab19094e"
+        "GUID:b92d5b99e2e7f4a5bb333c12ab19094e",
+        "GUID:00c479e63b1c74419820a39073267645"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -11,6 +12,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.ads.ios-support",
+            "expression": "",
+            "define": ""
+        }
+    ],
     "noEngineReferences": false
 }
