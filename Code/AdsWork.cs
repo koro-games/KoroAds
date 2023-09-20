@@ -14,6 +14,7 @@ namespace KoroGames.KoroAds
         private IAdBanner _adBanner;
         private IAdAnalytic _adAnalytic;
         private AdRequest _endLevelAd;
+        private bool _isInit = false;
 
         [Header("AD")]
         public bool LateInit;
@@ -59,17 +60,14 @@ namespace KoroGames.KoroAds
 
         public void Init()
         {
+            if (_isInit) return;
+            _isInit = true;
+
             if (PlayerPrefs.GetInt("NoAds") == 1)
             {
                 OnActiveNoAD();
             }
 
-            if (Manager != this && Manager != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            Manager = this;
             DontDestroyOnLoad(gameObject);
 
             _endLevelAd = new AdRequest("end_level_interstitial") { OnDisplay = () => _loadingScreen.SetActive(false) };
@@ -85,6 +83,14 @@ namespace KoroGames.KoroAds
 
         private IEnumerator Start()
         {
+
+            if (Manager != this && Manager != null)
+            {
+                Destroy(gameObject);
+                yield break;
+            }
+            Manager = this;
+
             if (_allowAutoInit)
             {
                 if (LateInit)
