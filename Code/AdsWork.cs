@@ -24,6 +24,8 @@ namespace KoroGames.KoroAds
         [Tooltip("Load inter if reward not loaded and vice versa"), Header("Setting")] public bool AllowCrossAd;
         [Tooltip("Alllow load ad with loading screen, or skip ads")] public bool AllowInterstitialLongLoad;
         [Tooltip("Alllow load ad with loading screen, or skip ads")] public bool AllowRewadedLongLoad;
+        [SerializeField] private bool _allowAutoInit = true;
+
 
 #if DEBUG_MODE
         [Tooltip("Debug use no ads")] public bool DebugNotAd;
@@ -55,11 +57,8 @@ namespace KoroGames.KoroAds
         }
         private AdRequest currentAd;
 
-        private IEnumerator Start()
+        public void Init()
         {
-            if (LateInit)
-                yield return new WaitForSeconds(0.66f);
-
             if (PlayerPrefs.GetInt("NoAds") == 1)
             {
                 OnActiveNoAD();
@@ -68,7 +67,7 @@ namespace KoroGames.KoroAds
             if (Manager != this && Manager != null)
             {
                 Destroy(gameObject);
-                yield break;
+                return;
             }
             Manager = this;
             DontDestroyOnLoad(gameObject);
@@ -81,9 +80,20 @@ namespace KoroGames.KoroAds
             _adRewarded = GetComponent<IAdRewarded>();
             _adBanner = GetComponent<IAdBanner>();
             _adAnalytic = GetComponent<IAdAnalytic>();
+
         }
 
-
+        private IEnumerator Start()
+        {
+            if (_allowAutoInit)
+            {
+                if (LateInit)
+                {
+                    yield return new WaitForSeconds(0.66f);
+                }
+                Init();
+            }
+        }
 
         public void CallInterstitial(AdRequest request)
         {
